@@ -1,0 +1,68 @@
+body {
+  background: black;
+}
+.card {
+  margin: 10px;
+  border-radius: 5px;
+  width: 300px !important;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff7a;
+  color: white;
+  font-size: 50px;
+  border-radius: 10px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+.btn {
+  display: flex;
+  justify-content: center;
+}
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+}
+
+.card:active {
+  transform: scale(0.95);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+#cards-container2 h1 {
+  text-align: center;
+  color: white;
+}
+.form {
+  max-width: 300px;
+  margin: auto;
+}
+.form button {
+  background: blue;
+  padding: 0px 50px;
+  margin:30px auto;
+  display: flex;
+  justify-content: center;
+  font-size: 40px;
+  color: white;
+
+}
+label {
+  color: white;
+  display: block;
+  font-size: 20px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+input {
+  outline: none;
+  border: none;
+  background-color: #ffffff7a;
+  color: white;
+  text-align: center;
+  font-size: 30px;
+  width: 100%;
+}

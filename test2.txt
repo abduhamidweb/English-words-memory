@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Flash Card App</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #333;
+            padding-top: 50px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        form {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        input[type=text] {
+            width: 50%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border-radius: 4px;
+            border: none;
+            background-color: #f1f1f1;
+        }
+
+        input[type=submit] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            margin-top: 10px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer
+        }
+
+        input[type=submit]:hover {
+            background-color: #45a049
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer
+        }
+
+        button:hover {
+            background-color: #45a049
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px
+        }
+
+        .card {
+            width: 300px;
+            height: auto;
+            margin-right: 20px;
+            margin-bottom: 20px;
+            box-shadow: -1px -1px 10px rgba(0, 0, 0, .3);
+            transition: .3s ease-in-out
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: -1px -1px 20px rgba(0, 0, 0, .5)
+        }
+
+        .card .front,
+        .card .back {
+            width: auto;
+            height: auto;
+            padding-top: .5em;
+            padding-bottom: .5em;
+            text-align: center
+        }
+
+        .card .front h3,
+        .card .back h3 {
+            font-size: .9em;
+            margin-bottom: .5em
+        }
+
+        .card .front p,
+        .card .back p {
+            font-size: .8em
+        }
+
+        .card .back p span {
+            font-weight: bold
+        }
+
+        .card .back p audio {
+            margin-left: .5em
+        }
+
+        .card.flipped .front {
+            transform-origin: left top;
+            transform-style: preserve-3d;
+            transform: rotateY(-180deg)
+        }
+
+        .card.flipped .back {
+            transform-origin: right top;
+            transform-style: preserve-3d;
+            transform: none !important
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Flash Card App</h1>
+        <h2>Add Flash Card</h2>
+        <form id="add-card-form">
+            <div class="form-group">
+                <label for="english-word">
+                    English Word:</label>
+                <input type="text" class="form-control" id="english-word" name="english-word" required>
+            </div>
+            <div class="form-group">
+                <label for="translation">Translation:</label>
+                <input type="text" class="form-control" id="translation" name="translation" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Card</button>
+        </form>
+        <div class="card-container"></div>
+    </div>
+
+    <script type="text/javascript">
+        var cards = [];
+
+        function addCard(e) {
+            e.preventDefault();
+            var englishWord = document.getElementById('english-word').value;
+            var translation = document.getElementById('translation').value;
+            cards.push({
+                englishWord: englishWord,
+                translation: translation
+            });
+            renderCards();
+        }
+
+        function renderCards() {
+            var cardContainer = document.querySelector('.card-container');
+            cardContainer.innerHTML = '';
+            for (var i = 0; i < cards.length; i++) {
+                var card = document.createElement('div');
+                card.classList.add('card');
+                card.addEventListener('click', function () {
+                    this.classList.toggle('flipped');
+                });
+                var front = document.createElement('div');
+                front.classList.add('front');
+                var back = document.createElement('div');
+                back.classList.add('back');
+                var englishWord = document.createElement('h3');
+                englishWord.textContent = cards[i].englishWord;
+                var audioIcon = document.createElement('audio');
+                audioIcon.setAttribute("controls", "controls");
+                audioIcon.setAttribute("src", "https://ssl.gstatic.com/dictionary/static/sounds/20200429/" + cards[i].englishWord + "--_gb_1.mp3");
+                var audioIconImg = document.createElement('img');
+                audioIconImg.setAttribute("src", "https://www.gstatic.com/images/icons/material/system/1x/volume_up_black_24dp.png");
+                audioIconImg.setAttribute("alt", "audio icon");
+                front.appendChild(englishWord);
+                front.appendChild(audioIcon);
+                back.appendChild(englishWord.cloneNode(true));
+                var translationWord = document.createElement('h3');
+                translationWord.textContent = 'Translation';
+                var translationText = document.createElement('p');
+                translationText.innerHTML = '<span>' + cards[i].translation + '</span>';
+                back.appendChild(translationWord);
+                back.appendChild(translationText);
+                card.appendChild(front);
+                card.appendChild(back);
+                cardContainer.appendChild(card);
+            }
+        }
+
+        var addCardForm = document.getElementById('add-card-form');
+        addCardForm.addEventListener('submit', addCard);
+    </script>
+</body>
+
+</html>
